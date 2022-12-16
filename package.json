@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd dist && node index.js",
+    "start": "cd dist && node .",
     "build": "tsc",
     "deploy": "cd dist && node deploy-commands.js"
   },
