@@ -1,5 +1,5 @@
 // Require the necessary discord.js classes
-import { Client, Collection, Events, GatewayIntentBits } from "discord.js";
+import { Client, Collection, GatewayIntentBits } from "discord.js";
 import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 import fs from "fs";
 import path from "path";
@@ -20,38 +20,19 @@ const commandFiles = fs
     .filter((file) => file.endsWith(".js"));
 for (const file of commandFiles) {
     const command = await import(`./commands/${file}`);
-    // Set a new item in the Collection with the key as the command name and the value as the exported module
-    if ("data" in command.default && "execute" in command.default) {
-        client.commands.set(command.default.data.name, command.default);
+    client.commands.set(command.default.data.name, command.default);
+}
+const eventFiles = fs
+    .readdirSync("./events")
+    .filter((file) => file.endsWith(".js"));
+for (const file of eventFiles) {
+    const event = await import(`./events/${file}`);
+    if (event.default.once) {
+        client.once(event.default.name, (...args) => event.default.execute(...args));
     }
     else {
-        console.log(`[WARNING] The command at ${command.default} is missing a required "data" or "execute" property.`);
+        client.on(event.default.name, (...args) => event.default.execute(...args));
     }
 }
-// When the client is ready, run this code (only once)
-// We use 'c' for the event parameter to keep it separate from the already defined 'client'
-client.once(Events.ClientReady, (c) => {
-    console.log(`Ready! Logged in as ${c.user.tag}`);
-});
-client.on(Events.InteractionCreate, async (interaction) => {
-    if (!interaction.isChatInputCommand())
-        return;
-    const command = interaction.client.commands.get(interaction.commandName);
-    if (!command) {
-        console.error(`No command matching ${interaction.commandName} was found.`);
-        return;
-    }
-    try {
-        await command.execute(interaction);
-    }
-    catch (error) {
-        console.error(error);
-        await interaction.reply({
-            content: "There was an error while executing this command!",
-            ephemeral: true,
-        });
-    }
-});
-// Log in to Discord with your client's token
 client.login(process.env.DISCORD_TOKEN);
 //# sourceMappingURL=index.js.map
