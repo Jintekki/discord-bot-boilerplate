@@ -1,12 +1,15 @@
 // Require the necessary discord.js classes
 import { Client, Collection, Events, GatewayIntentBits } from "discord.js";
 import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import handleCommands from "./handlers/commands.js";
+import handleEvents from "./handlers/events.js";
 
 export class ExtendedClient extends Client {
   commands;
+  loadCommands;
+  loadEvents;
 }
 
 // Find and configure .env environment variables
@@ -21,27 +24,10 @@ const client: ExtendedClient = new ExtendedClient({
 
 client.commands = new Collection();
 
-const commandFiles = fs
-  .readdirSync("./commands")
-  .filter((file) => file.endsWith(".js"));
-for (const file of commandFiles) {
-  const command = await import(`./commands/${file}`);
-  client.commands.set(command.default.data.name, command.default);
-}
+client.loadCommands = (client) => handleCommands(client);
+client.loadCommands(client);
 
-const eventFiles = fs
-  .readdirSync("./events")
-  .filter((file) => file.endsWith(".js"));
-
-for (const file of eventFiles) {
-  const event = await import(`./events/${file}`);
-  if (event.default.once) {
-    client.once(event.default.name, (...args) =>
-      event.default.execute(...args)
-    );
-  } else {
-    client.on(event.default.name, (...args) => event.default.execute(...args));
-  }
-}
+client.loadEvents = (client) => handleEvents(client);
+client.loadEvents(client);
 
 client.login(process.env.DISCORD_TOKEN);
