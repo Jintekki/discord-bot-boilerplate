@@ -1,0 +1,1 @@
+{"version":3,"file":"guild.js","sourceRoot":"","sources":["../../src/models/guild.ts"],"names":[],"mappings":"AAAA,OAAO,QAAQ,MAAM,UAAU,CAAC;AAEhC,MAAM,MAAM,GAAG,IAAI,QAAQ,CAAC,MAAM,CAAC;IACjC,OAAO,EAAE;QACP,IAAI,EAAE,MAAM;QACZ,QAAQ,EAAE,IAAI;KACf;CACF,CAAC,CAAC;AAEH,eAAe,QAAQ,CAAC,KAAK,CAAC,QAAQ,EAAE,MAAM,CAAC,CAAC"}
