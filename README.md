@@ -8,6 +8,7 @@ Upon cloning this repo, `cd` into the root folder of the project and create a `.
 
 The following environment variables are required:<br/>
 `DISCORD_CLIENT_ID`: Can be found in your Discord Development Portal, after selecting your application and clicking "OAuth2" under the settings menu.<br/>
+
 `DISCORD_TOKEN`: Your bot's personal token. For security purposes, tokens can only be viewed once, when created. Can be found in your Discord Development Portal, after selecting your application and clicking "Bot" under the settings menu. 
 
 For MongoDB support, add the following enviroment variable:<br/>
@@ -22,5 +23,5 @@ During development, it may be more convenient to deploy slash commands to a sing
 3. Fork and clone this respository
 4. `cd` into the root folder of the project and configure the enviroment variables as stated above. 
 5. `npm install`
-6. `npm run build`, then `npm run deploy` (the first time, and any time or change your slash commands), then `npm run start`
+6. `npm run build`, then `npm run deploy` (the first time, and any time you change your slash commands), then `npm run start`
 7. In your test server, use the `/ping` slash command to ensure everything is working correctly. 
